@@ -1,0 +1,20 @@
+### Register
+POST http://localhost:5000/api/auth/register
+Content-Type: application/json
+
+{
+  "username": "testuser",
+  "password": "testpass"
+}
+
+### Login
+POST http://localhost:5000/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "testuser",
+  "password": "testpass"
+}
+### Get my profile (protected)
+GET http://localhost:5000/api/auth/me
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODY3YTAzNzE0MTE2MmEzODRhODlkOWYiLCJpYXQiOjE3NTE2MjIwODQsImV4cCI6MTc1MTcwODQ4NH0.n_RhKlyOx67rYq9vgn6rVpoQoqkX4r27zcqgcvzNJc8
