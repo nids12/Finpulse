@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>FinPulse Dashboard</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+  </head>
+  <body>
+    <div class="topbar">
+      <div class="topbar-content">
+        <span id="user-greeting">Welcome, <span id="username">User</span></span>
+        <button id="logout-btn">Logout</button>
+      </div>
+    </div>
+    <div class="dark-toggle-container">
+      <label class="switch">
+        <input type="checkbox" id="darkToggle" />
+        <span class="slider"></span>
+      </label>
+      <span class="toggle-label">Dark Mode</span>
+    </div>
+    <h1>📊 FinPulse Dashboard</h1>
+    <!-- Search Box -->
+    <div class="search-bar-container">
+      <input
+        type="text"
+        id="symbolInput"
+        class="search-bar"
+        placeholder="Enter Stock Symbol (e.g., NFLX)"
+      />
+    </div>
+    <div id="cards"></div>
+    <canvas id="stockChart" width="800" height="400"></canvas>
+    <div style="max-width: 900px; margin: 0 auto 2em auto">
+      <canvas id="portfolioValueChart" width="800" height="300"></canvas>
+    </div>
+
+    <!-- Portfolio Section -->
+    <div id="portfolio-section" class="container" style="margin-top: 2em">
+      <h2>Your Portfolio</h2>
+      <table id="portfolio-table" style="width: 100%; margin-bottom: 1em">
+        <thead>
+          <tr>
+            <th>Symbol</th>
+            <th>Quantity</th>
+            <th>Avg. Price</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <h3>Transaction History</h3>
+      <table id="transactions-table" style="width: 100%">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Symbol</th>
+            <th>Qty</th>
+            <th>Price</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <script src="app.js"></script>
+  </body>
+</html>
