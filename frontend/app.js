@@ -1,3 +1,201 @@
+// --- Multi-Watchlist Logic ---
+let allWatchlists = [];
+let currentWatchlist = null;
+
+async function fetchWatchlists() {
+  const section = document.getElementById("watchlist-section");
+  const select = document.getElementById("watchlist-select");
+  const container = document.getElementById("watchlist-cards");
+  const title = document.getElementById("watchlist-title");
+  if (!container || !section || !select || !title) return;
+  showLoader();
+  try {
+    const res = await fetch(apiBase + "/stocks/watchlists", {
+      headers: authHeader(),
+    });
+    const data = await res.json();
+    if (!res.ok || !Array.isArray(data.watchlists)) {
+      container.innerHTML =
+        '<div class="error-msg">Failed to load watchlists.</div>';
+      hideLoader();
+      return;
+    }
+    allWatchlists = data.watchlists;
+    // Populate dropdown
+    select.innerHTML = "";
+    if (!allWatchlists.length) {
+      select.innerHTML = '<option value="">No Watchlists</option>';
+      container.innerHTML =
+        '<div class="empty-msg">No watchlists found. Create one!</div>';
+      title.textContent = "Your Watchlist";
+      currentWatchlist = null;
+      hideLoader();
+      return;
+    }
+    allWatchlists.forEach((wl, i) => {
+      const opt = document.createElement("option");
+      opt.value = wl.name;
+      opt.textContent = wl.name;
+      select.appendChild(opt);
+    });
+    // Select first by default if none selected
+    if (
+      !currentWatchlist ||
+      !allWatchlists.some((wl) => wl.name === currentWatchlist)
+    ) {
+      currentWatchlist = allWatchlists[0].name;
+    }
+    select.value = currentWatchlist;
+    renderCurrentWatchlist();
+  } catch (e) {
+    container.innerHTML =
+      '<div class="error-msg">Failed to load watchlists.</div>';
+  }
+  hideLoader();
+}
+
+function renderCurrentWatchlist() {
+  const container = document.getElementById("watchlist-cards");
+  const title = document.getElementById("watchlist-title");
+  if (!container || !title) return;
+  const wl = allWatchlists.find((wl) => wl.name === currentWatchlist);
+  if (!wl) {
+    container.innerHTML = '<div class="empty-msg">No watchlist selected.</div>';
+    title.textContent = "Your Watchlist";
+    return;
+  }
+  title.textContent = wl.name;
+  if (!wl.symbols.length) {
+    container.innerHTML = `
+      <div class="empty-msg modern-empty">
+        <div style="font-size:48px;opacity:0.18;">★</div>
+        <div style="font-size:1.2em;margin:8px 0 2px 0;">No stocks in this watchlist</div>
+        <div style="color:#888;font-size:0.98em;">Search and add stocks to get started!</div>
+      </div>
+    `;
+    container.style.background =
+      "linear-gradient(135deg,#f8fafc 60%,#e9f0fa 100%)";
+    container.style.minHeight = "180px";
+    container.style.display = "flex";
+    container.style.flexDirection = "column";
+    container.style.alignItems = "center";
+    container.style.justifyContent = "center";
+    return;
+  } else {
+    container.style.background = "";
+    container.style.minHeight = "";
+    container.style.display = "";
+    container.style.flexDirection = "";
+    container.style.alignItems = "";
+    container.style.justifyContent = "";
+  }
+  container.innerHTML = "";
+  wl.symbols.forEach((item) => {
+    // Support both string and object formats
+    let symbol, price;
+    if (typeof item === "string") {
+      symbol = item;
+      price = "-";
+    } else if (typeof item === "object" && item !== null) {
+      symbol = item.symbol || "-";
+      price = item.price !== undefined ? item.price : "-";
+    } else {
+      symbol = "-";
+      price = "-";
+    }
+    const card = document.createElement("div");
+    card.className = "watchlist-card";
+    card.innerHTML = `
+      <div class="wl-symbol">${symbol}</div>
+      <div class="wl-price">₹${price}</div>
+      <button class="remove-wl-btn" data-symbol="${symbol}">Remove</button>
+    `;
+    container.appendChild(card);
+  });
+  // Attach remove handlers
+  container.querySelectorAll(".remove-wl-btn").forEach((btn) => {
+    btn.onclick = async (e) => {
+      const symbol = btn.getAttribute("data-symbol");
+      await removeFromWatchlist(symbol);
+    };
+  });
+}
+
+async function createWatchlist() {
+  const name = prompt("Enter a name for your new watchlist:");
+  if (!name) return;
+  showLoader();
+  try {
+    const res = await fetch(apiBase + "/stocks/watchlists", {
+      method: "POST",
+      headers: authHeader(),
+      body: JSON.stringify({ name }),
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      showToast(data.error || "Failed to create watchlist", "error");
+    } else {
+      showToast("Watchlist created", "success");
+      currentWatchlist = name;
+      await fetchWatchlists();
+    }
+  } catch (e) {
+    showToast("Network error", "error");
+  }
+  hideLoader();
+}
+
+async function addToWatchlist(symbol) {
+  if (!currentWatchlist) return showToast("No watchlist selected", "error");
+  showLoader();
+  try {
+    const res = await fetch(
+      apiBase +
+        `/stocks/watchlists/${encodeURIComponent(currentWatchlist)}/add`,
+      {
+        method: "POST",
+        headers: authHeader(),
+        body: JSON.stringify({ symbol }),
+      }
+    );
+    const data = await res.json();
+    if (!res.ok) {
+      showToast(data.error || "Failed to add to watchlist", "error");
+    } else {
+      showToast("Added to watchlist", "success");
+      await fetchWatchlists();
+    }
+  } catch (e) {
+    showToast("Network error", "error");
+  }
+  hideLoader();
+}
+
+async function removeFromWatchlist(symbol) {
+  if (!currentWatchlist) return showToast("No watchlist selected", "error");
+  showLoader();
+  try {
+    const res = await fetch(
+      apiBase +
+        `/stocks/watchlists/${encodeURIComponent(currentWatchlist)}/remove`,
+      {
+        method: "POST",
+        headers: authHeader(),
+        body: JSON.stringify({ symbol }),
+      }
+    );
+    const data = await res.json();
+    if (!res.ok) {
+      showToast(data.error || "Failed to remove from watchlist", "error");
+    } else {
+      showToast("Removed from watchlist", "success");
+      await fetchWatchlists();
+    }
+  } catch (e) {
+    showToast("Network error", "error");
+  }
+  hideLoader();
+}
 // --- Loader & Toast Utilities ---
 function showLoader() {
   if (document.getElementById("global-loader")) return;
@@ -70,6 +268,7 @@ async function searchAndDisplayStock(symbol) {
             <p>Current Price: <b>₹${data.price}</b></p>
             <button class="buy-btn">Buy</button>
             <button class="sell-btn">Sell</button>
+            <button class="add-wl-btn" data-symbol="${searchSymbol}">Add to Watchlist</button>
           </div>
         `;
         // Attach buy/sell handlers
@@ -77,6 +276,9 @@ async function searchAndDisplayStock(symbol) {
           buyStock(searchSymbol, data.price);
         document.querySelector(`#card-${searchSymbol} .sell-btn`).onclick =
           () => sellStock(searchSymbol, data.price);
+        // Attach add to watchlist handler
+        document.querySelector(`#card-${searchSymbol} .add-wl-btn`).onclick =
+          () => addToWatchlist(searchSymbol);
         if (stockChart) stockChart.style.display = "block";
         return;
       } else {
@@ -320,9 +522,13 @@ function renderPortfolioValueChart(transactions) {
     }
     dataPoints.push({ x: new Date(t.date), y: value });
   });
-  // If no transactions, show empty chart
+  // If no transactions, hide chart
+  const chartDiv = document.getElementById("portfolioChartWrapper");
   if (!dataPoints.length) {
-    dataPoints.push({ x: new Date(), y: 0 });
+    if (chartDiv) chartDiv.style.display = "none";
+    return;
+  } else {
+    if (chartDiv) chartDiv.style.display = "block";
   }
   // Create or update chart
   const ctx = document.getElementById("portfolioValueChart").getContext("2d");
@@ -427,6 +633,23 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
+
+  // --- Watchlist UI Events ---
+  const select = document.getElementById("watchlist-select");
+  const createBtn = document.getElementById("create-watchlist-btn");
+  if (select) {
+    select.onchange = function () {
+      currentWatchlist = select.value;
+      renderCurrentWatchlist();
+    };
+  }
+  if (createBtn) {
+    createBtn.onclick = function () {
+      createWatchlist();
+    };
+  }
+  fetchWatchlists();
+
   fetchAndShowUsername();
   fetchPortfolio();
   const logoutBtn = document.getElementById("logout-btn");

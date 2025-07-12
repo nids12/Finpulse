@@ -1,3 +1,105 @@
+# Modern empty watchlist placeholder
+.modern-empty {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+  padding: 2.5em 1.5em 2em 1.5em;
+  min-width: 220px;
+  max-width: 340px;
+  margin: 32px auto 24px auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  animation: fadeInUp 0.5s;
+  border: 1.5px solid #e3e3e3;
+}
+.modern-empty div[style*="font-size:48px"] {
+  margin-bottom: 0.2em;
+  color: #007bff;
+  opacity: 0.18;
+  user-select: none;
+}
+.modern-empty div[style*="font-size:1.2em"] {
+  font-weight: 600;
+  color: #222;
+}
+.modern-empty div[style*="color:#888"] {
+  margin-top: 0.2em;
+  color: #888;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+body.dark .modern-empty {
+  background: #23272f;
+  color: #e3e3e3;
+  border: 1.5px solid #333;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.22);
+}
+body.dark .modern-empty div[style*="font-size:48px"] {
+  color: #1bc47d;
+  opacity: 0.18;
+}
+body.dark .modern-empty div[style*="font-size:1.2em"] {
+  color: #e3e3e3;
+}
+body.dark .modern-empty div[style*="color:#888"] {
+  color: #bfc7d5;
+}
+/* --- Loader Spinner --- */
+.loader-backdrop {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  background: rgba(255,255,255,0.6);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.loader {
+  border: 6px solid #e3e3e3;
+  border-top: 6px solid #007bff;
+  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  animation: spin 1s linear infinite;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* --- Toast Notification --- */
+.toast {
+  position: fixed;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #222;
+  color: #fff;
+  padding: 16px 32px;
+  border-radius: 12px;
+  font-size: 1.15rem;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 3000;
+  transition: opacity 0.3s, bottom 0.3s;
+}
+.toast.show {
+  opacity: 1;
+  pointer-events: auto;
+  bottom: 56px;
+}
+.toast.success { background: #1bc47d; color: #fff; }
+.toast.error { background: #f44336; color: #fff; }
+.toast.info { background: #007bff; color: #fff; }
 /* --- Topbar Styles --- */
 .topbar {
   width: 100%;
@@ -27,7 +129,7 @@
   border: none;
   border-radius: 6px;
   padding: 7px 18px;
-  font-size: 2rem;
+  font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
   transition: background 0.2s;
@@ -436,3 +538,66 @@ h1::before {
     font-size: 0.98rem;
   }
 }
+
+/* --- Watchlist Modern Card Styles --- */
+#watchlist-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em;
+}
+.watchlist-card {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+  padding: 1.1em 1.5em 1.1em 1.2em;
+  min-width: 180px;
+  max-width: 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  position: relative;
+  transition: box-shadow 0.2s, transform 0.2s;
+  border: 1px solid #e3e3e3;
+}
+.watchlist-card:hover {
+  box-shadow: 0 6px 32px rgba(0,123,255,0.13);
+  transform: translateY(-2px) scale(1.03);
+}
+.wl-symbol {
+  font-size: 1.18em;
+  font-weight: 700;
+  color: #007bff;
+  margin-bottom: 0.2em;
+}
+.wl-price {
+  font-size: 1.05em;
+  color: #222;
+  margin-bottom: 0.7em;
+}
+.remove-wl-btn {
+  align-self: flex-end;
+  background: #f44336;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 5px 14px;
+  font-size: 0.98em;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 0.2em;
+}
+.remove-wl-btn:hover {
+  background: #b71c1c;
+}
+body.dark .watchlist-card {
+  background: #23272f;
+  color: #e3e3e3;
+  border: 1px solid #333;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.25);
+}
+body.dark .wl-symbol { color: #1bc47d; }
+body.dark .wl-price { color: #bfc7d5; }
+body.dark .remove-wl-btn { background: #2d2d2d; color: #ffb3b3; }
+body.dark .remove-wl-btn:hover { background: #f44336; color: #fff; }

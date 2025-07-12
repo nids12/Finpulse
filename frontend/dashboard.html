@@ -32,9 +32,57 @@
         placeholder="Enter Stock Symbol (e.g., NFLX)"
       />
     </div>
+    <!-- Watchlist Section -->
+    <div
+      id="watchlist-section"
+      style="max-width: 900px; margin: 2em auto 1em auto"
+    >
+      <div
+        style="
+          display: flex;
+          align-items: center;
+          gap: 1em;
+          margin-bottom: 0.5em;
+        "
+      >
+        <select
+          id="watchlist-select"
+          style="
+            font-size: 1em;
+            padding: 0.3em 1em;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+          "
+        ></select>
+        <button
+          id="create-watchlist-btn"
+          style="
+            background: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 6px 16px;
+            font-size: 1em;
+            cursor: pointer;
+          "
+        >
+          + Create New Watchlist
+        </button>
+      </div>
+      <h2 id="watchlist-title" style="font-size: 1.2em; margin-bottom: 0.5em">
+        Your Watchlist
+      </h2>
+      <div
+        id="watchlist-cards"
+        style="display: flex; flex-wrap: wrap; gap: 1em"
+      ></div>
+    </div>
     <div id="cards"></div>
     <canvas id="stockChart" width="800" height="400"></canvas>
-    <div style="max-width: 900px; margin: 0 auto 2em auto">
+    <div
+      id="portfolioChartWrapper"
+      style="max-width: 900px; margin: 0 auto 2em auto"
+    >
       <canvas id="portfolioValueChart" width="800" height="300"></canvas>
     </div>
 
@@ -65,6 +113,7 @@
         <tbody></tbody>
       </table>
     </div>
+    <!-- Loader and Toast containers will be injected by JS -->
     <script src="app.js"></script>
   </body>
 </html>
