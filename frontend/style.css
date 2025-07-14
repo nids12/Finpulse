@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Modern empty watchlist placeholder
 .modern-empty {
   background: #fff;
@@ -100,6 +101,8 @@ body.dark .modern-empty div[style*="color:#888"] {
 .toast.success { background: #1bc47d; color: #fff; }
 .toast.error { background: #f44336; color: #fff; }
 .toast.info { background: #007bff; color: #fff; }
+=======
+>>>>>>> 67b5bf21c5dc5d8e4c3b0928fd73ead59377ce59
 /* --- Topbar Styles --- */
 .topbar {
   width: 100%;
@@ -129,7 +132,11 @@ body.dark .modern-empty div[style*="color:#888"] {
   border: none;
   border-radius: 6px;
   padding: 7px 18px;
+<<<<<<< HEAD
   font-size: 1rem;
+=======
+  font-size: 2rem;
+>>>>>>> 67b5bf21c5dc5d8e4c3b0928fd73ead59377ce59
   font-weight: 600;
   cursor: pointer;
   transition: background 0.2s;
@@ -538,6 +545,7 @@ h1::before {
     font-size: 0.98rem;
   }
 }
+<<<<<<< HEAD
 
 /* --- Watchlist Modern Card Styles --- */
 #watchlist-cards {
@@ -601,3 +609,5 @@ body.dark .wl-symbol { color: #1bc47d; }
 body.dark .wl-price { color: #bfc7d5; }
 body.dark .remove-wl-btn { background: #2d2d2d; color: #ffb3b3; }
 body.dark .remove-wl-btn:hover { background: #f44336; color: #fff; }
+=======
+>>>>>>> 67b5bf21c5dc5d8e4c3b0928fd73ead59377ce59

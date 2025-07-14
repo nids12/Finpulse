@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // --- Multi-Watchlist Logic ---
 let allWatchlists = [];
 let currentWatchlist = null;
@@ -224,6 +225,8 @@ function showToast(message, type = "info", duration = 2500) {
     toast.className = "toast " + type;
   }, duration);
 }
+=======
+>>>>>>> 67b5bf21c5dc5d8e4c3b0928fd73ead59377ce59
 // --- FinPulse Dashboard JS: Buy/Sell/Portfolio ---
 
 // --- Search Logic ---
@@ -238,8 +241,12 @@ async function searchAndDisplayStock(symbol) {
     if (stockChart) stockChart.style.display = "none";
     return;
   }
+<<<<<<< HEAD
   showLoader();
   cardsDiv.innerHTML = "";
+=======
+  cardsDiv.innerHTML = "<div>Loading...</div>";
+>>>>>>> 67b5bf21c5dc5d8e4c3b0928fd73ead59377ce59
   cardsDiv.style.minHeight = "180px";
   cardsDiv.style.padding = "";
   cardsDiv.style.background = "";
@@ -260,7 +267,10 @@ async function searchAndDisplayStock(symbol) {
       );
       const data = await res.json();
       if (res.ok && data.price) {
+<<<<<<< HEAD
         hideLoader();
+=======
+>>>>>>> 67b5bf21c5dc5d8e4c3b0928fd73ead59377ce59
         // Render card
         cardsDiv.innerHTML = `
           <div class="card" id="card-${searchSymbol}">
@@ -268,7 +278,10 @@ async function searchAndDisplayStock(symbol) {
             <p>Current Price: <b>₹${data.price}</b></p>
             <button class="buy-btn">Buy</button>
             <button class="sell-btn">Sell</button>
+<<<<<<< HEAD
             <button class="add-wl-btn" data-symbol="${searchSymbol}">Add to Watchlist</button>
+=======
+>>>>>>> 67b5bf21c5dc5d8e4c3b0928fd73ead59377ce59
           </div>
         `;
         // Attach buy/sell handlers
@@ -276,9 +289,12 @@ async function searchAndDisplayStock(symbol) {
           buyStock(searchSymbol, data.price);
         document.querySelector(`#card-${searchSymbol} .sell-btn`).onclick =
           () => sellStock(searchSymbol, data.price);
+<<<<<<< HEAD
         // Attach add to watchlist handler
         document.querySelector(`#card-${searchSymbol} .add-wl-btn`).onclick =
           () => addToWatchlist(searchSymbol);
+=======
+>>>>>>> 67b5bf21c5dc5d8e4c3b0928fd73ead59377ce59
         if (stockChart) stockChart.style.display = "block";
         return;
       } else {
@@ -288,7 +304,10 @@ async function searchAndDisplayStock(symbol) {
       lastError = "Network error";
     }
   }
+<<<<<<< HEAD
   hideLoader();
+=======
+>>>>>>> 67b5bf21c5dc5d8e4c3b0928fd73ead59377ce59
   cardsDiv.innerHTML = `<div class='error-msg'>${
     lastError || "Stock not found for: " + triedSymbols.join(", ")
   }</div>`;
@@ -335,7 +354,10 @@ if (!isAuthenticated()) {
 
 // Helper: Auth header
 function authHeader() {
+<<<<<<< HEAD
   const token = localStorage.getItem("token");
+=======
+>>>>>>> 67b5bf21c5dc5d8e4c3b0928fd73ead59377ce59
   return {
     Authorization: `Bearer ${token}`,
     "Content-Type": "application/json",
@@ -408,7 +430,10 @@ function showTradeModal(type, symbol, price, onConfirm) {
 // --- Buy/Sell Handlers (with modal) ---
 async function buyStock(symbol, price) {
   showTradeModal("buy", symbol, price, async (qty, close, showError) => {
+<<<<<<< HEAD
     showLoader();
+=======
+>>>>>>> 67b5bf21c5dc5d8e4c3b0928fd73ead59377ce59
     try {
       const res = await fetch(apiBase + "/stocks/buy", {
         method: "POST",
@@ -416,6 +441,7 @@ async function buyStock(symbol, price) {
         body: JSON.stringify({ symbol, quantity: qty, price }),
       });
       const data = await res.json();
+<<<<<<< HEAD
       hideLoader();
       if (!res.ok) {
         showToast(data.error || "Buy failed", "error");
@@ -427,6 +453,13 @@ async function buyStock(symbol, price) {
     } catch (e) {
       hideLoader();
       showToast("Network error", "error");
+=======
+      if (!res.ok) return showError(data.error || "Buy failed");
+      alert("Buy successful!");
+      close();
+      fetchPortfolio();
+    } catch (e) {
+>>>>>>> 67b5bf21c5dc5d8e4c3b0928fd73ead59377ce59
       showError("Network error");
     }
   });
@@ -434,7 +467,10 @@ async function buyStock(symbol, price) {
 
 async function sellStock(symbol, price) {
   showTradeModal("sell", symbol, price, async (qty, close, showError) => {
+<<<<<<< HEAD
     showLoader();
+=======
+>>>>>>> 67b5bf21c5dc5d8e4c3b0928fd73ead59377ce59
     try {
       const res = await fetch(apiBase + "/stocks/sell", {
         method: "POST",
@@ -442,6 +478,7 @@ async function sellStock(symbol, price) {
         body: JSON.stringify({ symbol, quantity: qty, price }),
       });
       const data = await res.json();
+<<<<<<< HEAD
       hideLoader();
       if (!res.ok) {
         showToast(data.error || "Sell failed", "error");
@@ -453,6 +490,13 @@ async function sellStock(symbol, price) {
     } catch (e) {
       hideLoader();
       showToast("Network error", "error");
+=======
+      if (!res.ok) return showError(data.error || "Sell failed");
+      alert("Sell successful!");
+      close();
+      fetchPortfolio();
+    } catch (e) {
+>>>>>>> 67b5bf21c5dc5d8e4c3b0928fd73ead59377ce59
       showError("Network error");
     }
   });
@@ -522,6 +566,7 @@ function renderPortfolioValueChart(transactions) {
     }
     dataPoints.push({ x: new Date(t.date), y: value });
   });
+<<<<<<< HEAD
   // If no transactions, hide chart
   const chartDiv = document.getElementById("portfolioChartWrapper");
   if (!dataPoints.length) {
@@ -529,6 +574,11 @@ function renderPortfolioValueChart(transactions) {
     return;
   } else {
     if (chartDiv) chartDiv.style.display = "block";
+=======
+  // If no transactions, show empty chart
+  if (!dataPoints.length) {
+    dataPoints.push({ x: new Date(), y: 0 });
+>>>>>>> 67b5bf21c5dc5d8e4c3b0928fd73ead59377ce59
   }
   // Create or update chart
   const ctx = document.getElementById("portfolioValueChart").getContext("2d");
@@ -603,18 +653,23 @@ async function fetchAndShowUsername() {
     const res = await fetch(apiBase + "/auth/me", { headers: authHeader() });
     if (!res.ok) throw new Error();
     const data = await res.json();
+<<<<<<< HEAD
     // Show only the part before @ if username looks like an email
     let displayName = data.username;
     if (displayName && displayName.includes("@")) {
       displayName = displayName.split("@")[0];
     }
     document.getElementById("username").textContent = displayName;
+=======
+    document.getElementById("username").textContent = data.username;
+>>>>>>> 67b5bf21c5dc5d8e4c3b0928fd73ead59377ce59
   } catch {
     document.getElementById("username").textContent = "User";
   }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+<<<<<<< HEAD
   // --- Dark Mode Toggle Logic ---
   const darkToggle = document.getElementById("darkToggle");
   // Load saved mode
@@ -650,6 +705,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   fetchWatchlists();
 
+=======
+>>>>>>> 67b5bf21c5dc5d8e4c3b0928fd73ead59377ce59
   fetchAndShowUsername();
   fetchPortfolio();
   const logoutBtn = document.getElementById("logout-btn");
