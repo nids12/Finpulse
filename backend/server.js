@@ -31,11 +31,20 @@ connectDB();
 app.use(cors());
 app.use(express.json());
 
+// Serve frontend static files
+const path = require("path");
+
 // REST API route
 app.use("/api/stocks", stockRoutes);
 app.use("/api/stocks", portfolioRoutes);
 const authRoutes = require("./routes/authRoutes");
 app.use("/api/auth", authRoutes);
+// User balance, deposit, withdraw endpoints
+const userRoutes = require("./routes/userRoutes");
+app.use("/api/user", userRoutes);
+
+// Serve static files (after API routes)
+app.use(express.static(path.join(__dirname, "../frontend")));
 
 // ✅ Start polling stock prices and emitting via socket.io
 stockSocket(io); // 💡 Important: keep this after io is created

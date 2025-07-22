@@ -12,8 +12,73 @@
     <div class="topbar">
       <div class="topbar-content">
         <span id="user-greeting">Welcome, <span id="username">User</span></span>
-        <button id="logout-btn">Logout</button>
+        <div style="display: flex; align-items: center; gap: 1.5em">
+          <span
+            id="balance-display"
+            style="font-size: 1.1rem; color: #1bc47d; font-weight: 600"
+            >Balance: ₹0</span
+          >
+          <button
+            id="deposit-btn"
+            style="
+              background: #007bff;
+              color: #fff;
+              border: none;
+              border-radius: 6px;
+              padding: 7px 14px;
+              font-size: 1rem;
+              font-weight: 600;
+              cursor: pointer;
+              margin-right: 6px;
+            "
+          >
+            Add Money
+          </button>
+          <button
+            id="withdraw-btn"
+            style="
+              background: #ffb300;
+              color: #fff;
+              border: none;
+              border-radius: 6px;
+              padding: 7px 14px;
+              font-size: 1rem;
+              font-weight: 600;
+              cursor: pointer;
+            "
+          >
+            Withdraw
+          </button>
+          <button id="logout-btn">Logout</button>
+        </div>
       </div>
+    </div>
+    <div
+      id="account-transactions-section"
+      class="container"
+      style="max-width: 900px; margin: 24px auto 0 auto"
+    >
+      <h3 style="margin-bottom: 10px">Account Transaction History</h3>
+      <table
+        id="account-transactions-table"
+        style="
+          width: 100%;
+          margin-bottom: 1em;
+          background: #f9fafd;
+          border-radius: 10px;
+          overflow: hidden;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        "
+      >
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Amount</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
     </div>
     <div class="dark-toggle-container">
       <label class="switch">
@@ -95,6 +160,7 @@
             <th>Symbol</th>
             <th>Quantity</th>
             <th>Avg. Price</th>
+            <th>Sell</th>
           </tr>
         </thead>
         <tbody></tbody>
