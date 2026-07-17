@@ -8,8 +8,8 @@ const userSchema = new mongoose.Schema({
       name: { type: String, required: true },
       symbols: [{ type: String }],
     },
-  ], // Array of { name, symbols[] }
-  balance: { type: Number, default: 0 }, // User's account balance
+  ], 
+  balance: { type: Number, default: 0 },
   transactions: [
     {
       type: { type: String, enum: ["deposit", "withdraw"], required: true },
@@ -17,7 +17,6 @@ const userSchema = new mongoose.Schema({
       date: { type: Date, default: Date.now },
     },
   ], // Deposit/withdraw history
-  // You can add more fields like email, preferences, etc.
 });
 
 module.exports = mongoose.model("User", userSchema);
