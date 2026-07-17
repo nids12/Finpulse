@@ -1,5 +1,5 @@
 const axios = require("axios");
-const Stock = require("../models/Stock"); // ✅ Step 1: Import Stock model
+const Stock = require("../models/Stock"); // Importing Stock Model
 
 const symbols = ["AAPL", "TSLA", "GOOGL"];
 const API_KEY = process.env.STOCK_API_KEY;
@@ -24,11 +24,11 @@ const startPolling = (io) => {
         };
 
         io.emit("stockData", stockData); // emit to frontend
-        await Stock.create(stockData); // ✅ Step 2: save to MongoDB
+        await Stock.create(stockData); 
 
-        console.log(`📡 Sent and saved data for ${symbol}`, stockData);
+        console.log(`Sent and saved data for ${symbol}`, stockData);
       } catch (err) {
-        console.error(`❌ Error fetching ${symbol}:`, err.message);
+        console.error(`Error fetching ${symbol}:`, err.message);
       }
     }
   };
@@ -39,7 +39,7 @@ const startPolling = (io) => {
 
 module.exports = (io) => {
   io.on("connection", (socket) => {
-    console.log("📡 Client connected:", socket.id);
+    console.log("Client connected:", socket.id);
 
     socket.emit("welcome", "Connected to FinPulse WebSocket!");
 
@@ -48,7 +48,7 @@ module.exports = (io) => {
     }
 
     socket.on("disconnect", () => {
-      console.log("❌ Client disconnected:", socket.id);
+      console.log("Client disconnected:", socket.id);
     });
   });
 };
