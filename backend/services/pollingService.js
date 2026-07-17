@@ -27,16 +27,16 @@ const pollStockPrices = (io) => {
         };
 
         io.emit("stockData", stockData);
-        console.log(`📡 Sent data for ${symbol}`, stockData);
+        console.log(`Sent data for ${symbol}`, stockData);
         // Log the stock data for debugging
         console.log("[DEBUG] Emitted stockData:", stockData);
       } catch (err) {
-        console.error(`❌ Error fetching ${symbol}:`, err.message);
+        console.error(`Error fetching ${symbol}:`, err.message);
       }
     }
   };
 
-  // ⏱️ Poll every 60 seconds (1 minute)
+
   setInterval(fetchPrices, 60000);
 
   // Helper to fetch and emit data for a single symbol
@@ -62,14 +62,13 @@ const pollStockPrices = (io) => {
     }
   };
 
-  // 🧠 Listen for new symbols from frontend
+  
   io.on("connection", (socket) => {
     socket.on("addSymbol", (symbol) => {
       symbol = symbol.toUpperCase().trim();
       if (symbol && !symbols.includes(symbol)) {
         symbols.push(symbol);
-        console.log(`➕ New symbol added: ${symbol}`);
-        // Immediately fetch and emit data for the new symbol
+        console.log(`New symbol added: ${symbol}`);
         fetchAndEmitSymbol(symbol);
       }
     });
