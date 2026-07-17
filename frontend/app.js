@@ -1822,9 +1822,6 @@ setTimeout(() => {
   }
 }, 1000);
 
-// Global event listener for logout button
-// This will catch all clicks on the logout button, no matter when it is rendered
-
 document.addEventListener("click", function (e) {
   if (e.target && e.target.id === "logout-btn") {
     console.log("Global: Logout button clicked");
